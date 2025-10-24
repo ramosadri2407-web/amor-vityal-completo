@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amor Virtual 💞</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; width: 100%; overflow: hidden; }
+  
+  body {
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 700% 700%;
+    animation: gradientMove 30s ease infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    color: white;
+    position: relative;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  header { position: absolute; top: 10px; left: 0; width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 15px; }
+  h1 { justify-self: center; font-family: 'Dancing Script', cursive; font-size: clamp(1.5rem, 5vw, 3rem); color: #fefefe; text-shadow: 0 0 10px rgba(0,0,0,0.6); margin: 0; animation: heartbeat 2s ease-in-out infinite; display: flex; align-items: center; gap: 8px; }
+  @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+  .menuBtnMain { position: relative; font-family: 'Dancing Script', cursive; font-size: clamp(1.2rem, 3vw, 1.8rem); color: #f0f0f0; cursor: pointer; user-select: none; text-shadow: 0 0 10px rgba(0,0,0,0.6); }
+  .submenu { display: none; position: absolute; top: 2.8rem; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.15); border-radius: 15px; padding: 12px; flex-direction: column; gap: 8px; backdrop-filter: blur(8px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease; z-index: 999; }
+  .submenu button { padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 18px); background: linear-gradient(135deg, #ffb6c1, #ff69b4); border: none; color: #fff; font-size: 1rem; cursor: pointer; border-radius: 12px; text-align: center; font-family: 'Dancing Script', cursive; font-weight: 600; letter-spacing: 0.5px; text-shadow: 0 0 10px rgba(0,0,0,0.6); transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3); position: relative; }
+  .submenu button::before { content: "💗"; position: absolute; left: -30px; top: 50%; transform: translateY(-50%); font-size: 1.3rem; opacity: 0; transition: all 0.3s ease; }
+  .submenu button:hover { background: linear-gradient(135deg, #ff80bf, #ff4da6); transform: scale(1.07); box-shadow: 0 6px 15px rgba(255, 105, 180, 0.5); }
+  .submenu button:hover::before { left: 10px; opacity: 1; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+  #soundBtn { position: fixed; bottom: 20px; right: 20px; width: clamp(40px, 4vw, 50px); height: clamp(40px, 4vw, 50px); border-radius: 50%; background: #2c3e50; color: #f0f0f0; font-size: clamp(16px, 3vw, 20px); cursor: pointer; z-index: 9999; display: flex; justify-content: center; align-items: center; border: none; transition: transform 0.2s ease, background 0.2s ease; font-family: 'Dancing Script', cursive; text-shadow: 0 0 10px rgba(0,0,0,0.6); }
+  #soundBtn:hover { transform: scale(1.2); background: #34495e; }
+  #soundBtn:active { transform: scale(0.95); }
+
+  .heart { position: absolute; width: 2rem; height: 2rem; background-image: url('https://cdn3.emoji.gg/emojis/8842-heart.png'); background-size: cover; pointer-events: none; z-index: 1; animation-name: floatHeart; animation-timing-function: linear; animation-fill-mode: forwards; }
+  @keyframes floatHeart { 0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(-50vh) translateX(var(--x-move)) rotate(360deg); opacity: 0; } }
+
+  /* 📖 Libro Animado */
+  .book {
+  width: clamp(250px, 60vw, 300px);
+  height: clamp(350px, 70vh, 400px);
+  perspective: 2000px;
+  margin-top: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  box-shadow: 0 35px 80px rgba(0,0,0,0.45);
+  z-index: 10;
+  transform: rotateX(6deg) rotateY(-8deg); /* posición inicial */
+  animation: floatBook 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes floatBook {
+  0% { transform: rotateX(6deg) rotateY(-8deg) translateY(0px); }
+  50% { transform: rotateX(8deg) rotateY(-10deg) translateY(-10px); }
+  100% { transform: rotateX(6deg) rotateY(-8deg) translateY(0px); }
+}
+
+/* Pausar animación al hover con JS */
+.book.paused {
+  animation-play-state: paused;
+}
+
+  .spine {
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 15px;
+    height: 100%;
+    background: linear-gradient(180deg, #f7d5d6, #9bbfce);
+    border-radius: 4px;
+    box-shadow: 3px 0 15px rgba(0,0,0,0.5);
+    z-index: 20;
+  }
+
+.page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transition: transform 6s ease;
+  backface-visibility: hidden;
+  background: linear-gradient(270deg, #fff, #fefefe);
+  color: #333;
+  display: flex;
+  flex-direction: column; /* para que los hijos vayan de arriba a abajo */
+  justify-content: flex-start; /* título al top, contenido debajo */
+  align-items: center; /* centra horizontalmente */
+  font-size: clamp(16px, 2vw, 20px);
+  padding: clamp(15px, 2vw, 20px);
+  text-align: left; /* párrafo alineado a la izquierda */
+  box-shadow: inset -3px 0 10px rgba(0,0,0,0.1);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow-y: auto;
+  background-image: repeating-linear-gradient(white 0, white 30px, #e6e6e6 30px, #e6e6e6 31px); /* líneas */
+}
+
+.page h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(18px, 3vw, 24px);
+  color: #333;
+  margin: 0 0 clamp(10px, 1.5vw, 15px) 0; /* espacio debajo del título */
+  text-align: center; /* título centrado horizontalmente */
+}
+
+.page p {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.5;
+  text-align: left;
+  color: #333;
+  padding: 0; /* ya no necesitamos padding extra */
+  margin: 0;
+  width: 100%; /* ocupa todo el ancho de la página */
+}
+
+
+  .cover {
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 700% 700%;
+    animation: gradientMove 30s ease infinite;
+    color: #fff;
+    font-size: clamp(22px, 4vw, 28px);
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(15px, 2vw, 20px);
+    position: relative;
+    box-shadow: inset -3px 0 15px rgba(0,0,0,0.4);
+  }
+  .cover img { width: clamp(80px, 25%, 120px); height: auto; border-radius: 0; box-shadow: none; }
+
+  .page.flipped { transform: rotateY(-180deg); }
+
+  .controls button {
+    pointer-events: all;
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 700% 700%;
+    animation: gradientMove 30s ease infinite, heartbeat 2s ease-in-out infinite;
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-shadow: 0 0 8px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+  .controls button:hover { transform: scale(1.1); filter: brightness(1.2); }
+
+  /* Z-index para páginas */
+  .page:nth-child(1) { z-index: 10; }
+  .page:nth-child(2) { z-index: 9; }
+  .page:nth-child(3) { z-index: 8; }
+  .page:nth-child(4) { z-index: 7; }
+  .page:nth-child(5) { z-index: 6; }
+  .page:nth-child(6) { z-index: 5; }
+
+  /* 🎀 Detalles flotantes (corazones, moños y Hello Kittys) */
+.floating-detail {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.8;
+  animation: floatDetail 10s linear infinite;
+  pointer-events: none;
+  z-index: 0; /* detrás del libro y menú */
+}
+
+@keyframes floatDetail {
+  0% {
+    transform: translateY(100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.9; }
+  100% {
+    transform: translateY(-60vh) translateX(var(--x-move)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="menuBtnMain" id="juegosBtn">🎮 Juegos
+    <div class="submenu" id="juegosSubmenu">
+<button onclick="window.location.href='juegos.html?juego=sopa'">🔠 Sopa de Letras</button>
+<button onclick="window.location.href='juegos.html?juego=minitest'">💭 Mini Test</button>
+
+
+    </div>
+  </div>
+  <h1>💞 Amor Virtual 💞</h1>
+  <div class="menuBtnMain" id="emocionesBtn">😊 Emociones
+    <div class="submenu" id="emocionesSubmenu">
+<button onclick="window.location.href='cartas.html?emocion=feliz'">😊 Feliz</button>
+<button onclick="window.location.href='cartas.html?emocion=triste'">😢 Triste</button>
+<button onclick="window.location.href='cartas.html?emocion=enojada'">😡 Enojada</button>
+<button onclick="window.location.href='cartas.html?emocion=estresada'">😰 Estresada</button>
+<button onclick="window.location.href='cartas.html?emocion=insegura'">🫣 Insegura</button>
+    </div>
+  </div>
+</header>
+
+<audio id="bgMusic" src="https://github.com/ramosadri2407-web/audiomo3/raw/refs/heads/main/my_song.org.mp3" loop></audio>
+<button id="soundBtn">▶</button>
+
+<!-- 📖 Libro Animado -->
+<div class="book" id="book">
+  <div class="spine"></div>
+
+  <!-- Portada -->
+  <div class="page cover">
+    For You 💞
+    <img src="https://i.ibb.co/fYVgLZ1Z/OIP-7-Picsart-Background-Remover.png" alt="Imagen decorativa">
+  </div>
+
+  <!-- Página 1 -->
+  <div class="page">
+    <h2>🎉 Feliz Cumpleaños</h2>
+    <p>
+      Quise dejar esta página solo para felicitarte en este grandioso día que es para ti.  
+      Es un día especial porque estás terminando una etapa y empiezas otra.  
+      Con esto que he creado para ti quiero que tengas un recuerdo para siempre de cómo te recibieron en esta nueva etapa que emprendes en tu vida, que tal vez no sea fácil, pero con la ayuda de Dios y tus seres cercanos se puede seguir adelante.  
+      Solo espero que enfrentes esta nueva etapa con valentía y voluntad dispuesta a cumplir todo lo que te propongas.  
+      Que salga adelante por ti misma, por tu esfuerzo y trabajo duro.  
+      ¡Espero que tengas un lindo cumpleaños y felices 18 baby! 💌
+    </p>
+  </div>
+
+  <!-- Página 2 -->
+  <div class="page">
+    <h2>❤️ Nuestra Relación</h2>
+    <p>
+      Yo no sé si lo sepas o no, pero te has convertido en alguien muy especial en este tiempo que llevamos juntos.  
+      ¡Waoo! Cuando digo “tiempo” suena como si fuera poco, pero ya son 10 meses llenos de bonitos momentos y recuerdos.  
+      También ha habido peleas, disgustos y enfados, que también forman parte de una relación.  
+      Tal vez no he sido lo que pensabas, pero trato de ser lo mejor para ti porque lo mereces.  
+      Espero que sigamos teniendo esta linda relación hasta donde Dios nos permita. Espero que nunca te canses de mí y, si lo haces, me lo hagas saber.  
+      Tengo mi confianza depositada en ti, no me defraudes. ❤️❤️♾️
+    </p>
+  </div>
+
+  <!-- Página 3 -->
+  <div class="page">
+    <h2>📸 Momentos Inolvidables</h2>
+    <p>
+      ¡Waooo! Ya 10 meses es algo que no cualquiera puede pensar que pase en una relación hoy en día.  
+      Pero míranos, aquí estamos juntos y luchando por llegar de nuevo a ese 12/25.  
+      Todo esto ha sido muy hermoso hasta el momento, con muchas historias, bromas, juegos y soportando frío y calor.  
+      Estos 10 meses son una pequeña parte de mis casi 20 años, pero siento que son algo de lo más importante de mi vida, así como esos recuerdos de niños que están guardados en mi memoria.  
+      Ahora tú estás muy dentro de mí, en mi mente y recuerdos. Espero con ansias el 11/25, 12/25 y volver a 01/25, 02/25, etc.  
+      Espero poder seguir estando a tu lado para ver tus planes y metas cumplirse y celebrar contigo. Gracias por todo esto baby. 📸
+    </p>
+  </div>
+
+  <!-- Página 4 -->
+  <div class="page">
+    <h2>🌙 Un Regalo Especial</h2>
+    <p>
+      No te imaginas cuánto tiempo pensé en qué darte, qué podría comprar y qué podrías usar.  
+      Siempre seguía dando vueltas a la idea: "¿Qué le puedo regalar que no olvide y pueda conservar para siempre, que no se dañe y lo tenga el tiempo que desee?"  
+      Fue entonces cuando se me ocurrió esta idea.  
+      No sé cómo lo hice, pero aquí está. Aún le faltan detalles, pero siento que te gustó mucho.  
+      De tu papi para ti, mami, para que lo disfrutes y para que este día sea especial para ti. 🌙
+    </p>
+  </div>
+
+  <!-- Página 5 -->
+  <div class="page">
+    <h2>💫 Fin</h2>
+    <p>¡Espero que disfrutes este pequeño libro y todos los momentos que compartimos juntos!</p>
+  </div>
+</div>
+
+<div class="controls">
+  <button id="prev">Anterior</button>
+  <button id="next">Siguiente</button>
+</div>
+
+<script>
+  // Submenús
+  document.getElementById('juegosBtn').addEventListener('click', ()=> {
+    document.getElementById('juegosSubmenu').style.display = document.getElementById('juegosSubmenu').style.display === 'flex' ? 'none' : 'flex';
+  });
+  document.getElementById('emocionesBtn').addEventListener('click', ()=> {
+    document.getElementById('emocionesSubmenu').style.display = document.getElementById('emocionesSubmenu').style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  // Música
+  const bgMusic = document.getElementById('bgMusic');
+  const soundBtn = document.getElementById('soundBtn');
+  let playing = false;
+  soundBtn.addEventListener('click', () => {
+    if(!playing) { bgMusic.play(); soundBtn.textContent='⏸'; playing=true; }
+    else { bgMusic.pause(); soundBtn.textContent='▶'; playing=false; }
+  });
+
+  // Corazones flotando
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*window.innerWidth + 'px';
+    heart.style.setProperty('--x-move', (Math.random()*200-100)+'px');
+    heart.style.animationDuration = (3+Math.random()*3)+'s';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 6000);
+  }
+  setInterval(createHeart, 500);
+
+ // Libro animado (flujo con cierre página por página)
+const pages = document.querySelectorAll('.book .page');
+let currentPage = -1; // -1 = portada
+let closing = false;
+
+function showPage(index) {
+  pages.forEach((p,i) => p.classList.toggle('flipped', i <= index && index != -1));
+}
+
+// Siguiente
+document.getElementById('next').addEventListener('click', () => {
+  if (closing) return; // no interrumpir animación de cierre
+
+  if (currentPage < pages.length - 2) { 
+    currentPage++;
+    showPage(currentPage);
+  } else { 
+    // empieza cierre página por página
+    closing = true;
+    let closeIndex = currentPage;
+    const interval = setInterval(() => {
+      showPage(closeIndex);
+      closeIndex--;
+      if (closeIndex < -1) {
+        clearInterval(interval);
+        currentPage = -1;
+        closing = false;
+      }
+    }, 700); // tiempo entre cada página cerrándose (ajustable)
+  }
+});
+
+// Anterior
+document.getElementById('prev').addEventListener('click', () => {
+  if (closing) return;
+
+  if (currentPage > -1) { 
+    currentPage--;
+    showPage(currentPage);
+  } else { 
+    currentPage = pages.length - 2; // última página
+    showPage(currentPage);
+  }
+});
+
+const book = document.getElementById('book');
+
+book.addEventListener('mouseenter', () => {
+  book.classList.add('paused'); // pausa la animación al pasar el cursor
+});
+
+book.addEventListener('mouseleave', () => {
+  book.classList.remove('paused'); // vuelve a flotar al quitar el cursor
+});
+
+// 🎀 Fondo con corazones, moños y Hello Kittys flotantes
+const details = [
+      'https://i.ibb.co/8DPLGsWq/OIP-10-Picsart-Background-Remover.png',
+      'https://i.ibb.co/hF9pt6fk/OIP-9-Picsart-Background-Remover.png',
+      'https://i.ibb.co/dxJbQY9/OIP-8-Picsart-Background-Remover.png',
+      'https://i.ibb.co/fYVgLZ1Z/OIP-7-Picsart-Background-Remover.png',
+      'https://i.ibb.co/s9cjFFS6/OIP-6-Picsart-Background-Remover.png',
+      'https://i.ibb.co/hFFZdJ5c/OIP-5-Picsart-Background-Remover.png',
+      'https://cdn-icons-png.flaticon.com/512/2107/2107845.png', // 💗 corazón rosa
+      'https://i.ibb.co/dxJbQY9/OIP-8-Picsart-Background-Remover.png',
+      'https://i.ibb.co/fYVgLZ1Z/OIP-7-Picsart-Background-Remover.png',
+      'https://i.ibb.co/s9cjFFS6/OIP-6-Picsart-Background-Remover.png',
+      'https://i.ibb.co/hFFZdJ5c/OIP-5-Picsart-Background-Remover.png',
+      'https://cdn-icons-png.flaticon.com/512/2107/2107845.png', // 💗 corazón rosa
+      'https://cdn-icons-png.flaticon.com/512/2107/2107845.png', // 💗 corazón rosa
+      'https://cdn-icons-png.flaticon.com/512/2107/2107845.png' // 💗 corazón rosa
+
+      ];
+
+function createDetail() {
+  const detail = document.createElement('div');
+  detail.classList.add('floating-detail');
+  const img = details[Math.floor(Math.random() * details.length)];
+  detail.style.backgroundImage = `url('${img}')`;
+
+  // 💫 Tamaño más grande (entre 60px y 120px)
+  const size = 60 + Math.random() * 60;
+  detail.style.width = `${size}px`;
+  detail.style.height = `${size}px`;
+
+  // Posición y animación
+  detail.style.left = Math.random() * window.innerWidth + 'px';
+  detail.style.setProperty('--x-move', (Math.random() * 200 - 100) + 'px');
+  detail.style.animationDuration = (6 + Math.random() * 6) + 's'; // un poco más rápido
+  detail.style.transform = `scale(${0.8 + Math.random() * 0.8})`;
+  detail.style.opacity = 0.9;
+
+  document.body.appendChild(detail);
+  setTimeout(() => detail.remove(), 12000);
+}
+
+// 🌸 Aparecen más seguido (cada 0.8 segundos)
+setInterval(createDetail, 800);
+
+
+</script>
+
+</body>
+</html>

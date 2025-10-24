@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amor Virtual 💞</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh; /* Ocupa toda la pantalla */
+      width: 100vw;  /* Evita scroll horizontal */
+      background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+      background-size: 700% 700%;
+      animation: gradientMove 10s ease infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      color: white;
+      overflow: hidden; /* Evita cualquier scroll */
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      position: absolute;
+      top: 2%; /* Más adaptable para pantallas pequeñas */
+      width: 100%;
+      text-align: center;
+      padding: 0 10px; /* Evita que se corte en pantallas muy pequeñas */
+    }
+
+    header h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 6vw, 3rem); /* Ajuste automático según pantalla */
+      color: #f0f0f0;
+      text-shadow: 0 0 10px rgba(0,0,0,0.6);
+      margin: 0;
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+
+    .container {
+      z-index: 100;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 30px 20px;
+      backdrop-filter: blur(200px);
+      max-width: 90vw; /* Se adapta al ancho de pantalla */
+      box-sizing: border-box;
+    }
+
+    .container h2 {
+      font-size: clamp(1.5rem, 5vw, 2.2rem);
+      margin-bottom: 20px;
+      text-shadow: 0 0 100px rgba(255,255,255,0.8);
+    }
+
+    button {
+      margin: 5px;
+      padding: 20px 40px;
+      border: none;
+      border-radius: 40px;
+      background-color: #fff;
+      color: #ff4d79;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.5); /* Ajustado para móviles */
+      background-color: #FFCCFF;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    .triste-img {
+      width: 80px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    /* 💞 Imágenes flotantes */
+    .flotante {
+      position: absolute;
+      max-width: 20vw;
+      width: auto;
+      height: auto;
+      opacity: 0.3;
+      pointer-events: none;
+      animation: flotar 6s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Kittys y Spidermans */
+    .spidey1 { top: 15%; right: 3%; animation-delay: 2s; }
+    .kitty2 { top: 60%; left: 5%; animation-delay: 2s; }
+    .kitty1 { top: 15%; left: 5%; animation-delay: -3s; }
+    .spidey2 { top: 65%; right: 5%; animation-delay: -3s; }
+
+    /* 💫 Corazones flotantes */
+    .corazon {
+      position: absolute;
+      font-size: clamp(15px, 4vw, 40px);
+      opacity: 1.0;
+      animation: flotarCorazon 15s linear infinite;
+    }
+
+    @keyframes flotarCorazon {
+      from { transform: translateY(70vh) scale(3); opacity: 1.8; }
+      to { transform: translateY(-10vh) scale(1.3); opacity: 0; }
+    }
+
+    /* Botón de play/pause */
+    #soundBtn {
+      position: fixed;
+      bottom: 2%;
+      right: 2%;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #2c3e50;
+      color: #f0f0f0;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    #soundBtn:hover { transform: scale(1.2); background: #34495e; }
+    #soundBtn:active { transform: scale(0.95); }
+
+    /* Escena triste responsive */
+    #escenaTriste img {
+      max-width: 15vw;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgMusic" src="https://raw.githubusercontent.com/ramosadri2407-web/mi-audio-we/main/amor_eliannyi.mp3%20(1).mp3" loop></audio>
+  <button id="soundBtn">▶</button>
+
+  <header>
+    <h1>💞 Amor Virtual 💞</h1>
+  </header>
+
+  <!-- Imágenes flotantes -->
+  <img src="https://i.ibb.co/rKYjk0Tx/hello-kitty-birthday-girl-transparent-png-11719345788bxajrvd4rh-removebg-preview.png" alt="Hello Kitty" class="flotante kitty1">
+  <img src="https://wallpapercave.com/wp/wp2885626.png" alt="Hello Kitty" class="flotante kitty2">
+  <img src="https://i.postimg.cc/TPkcbdqP/51-Jz-Mm-UXm-NL-SL500-1-removebg-preview.png" alt="Spider-Man" class="flotante spidey1">
+  <img src="https://i.postimg.cc/ZnvvCZjg/il-1080x-N-6032086349-jha5-1-removebg-preview.png" alt="Spider-Man" class="flotante spidey2">
+
+  <main class="container">
+    <h2>¿Qué es el amor?</h2>
+    <div class="botones">
+      <button id="btnSaber">💞 ¿Quieres saber?</button>
+      <button id="btnSkip">💔 Skip</button>
+    </div>
+
+    <div id="mensajeRomantico" class="oculto">
+      <p>“Dicen que el amor no se explica, se siente.<br> Pero si pudiera explicarlo… sería tú, Eliannyi 💞”</p>
+      <button id="btnContinuar">Continuar 💘</button>
+    </div>
+
+    <div id="escenaTriste" class="oculto" style="position:relative; height:300px;">
+      <img src="URL_IMAGEN_IZQUIERDA" alt="Imagen izquierda" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); animation: floatSide 4s ease-in-out infinite;">
+      <img src="URL_IMAGEN_DERECHA" alt="Imagen derecha" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); animation: floatSide 5s ease-in-out infinite;">
+      <p style="margin-top:120px; text-align:center;">
+        😢 Hello Kitty y Spider-Man lloran...<br> Intenta de nuevo escaneando el código QR 💔
+      </p>
+    </div>
+  </main>
+
+  <script>
+    // 🎵 Botón de audio
+    const bgMusic = document.getElementById('bgMusic');
+    const soundBtn = document.getElementById('soundBtn');
+    let isPlaying = false;
+
+    soundBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        bgMusic.volume = 0.3;
+        bgMusic.play().then(() => {
+          soundBtn.textContent = '⏸';
+          isPlaying = true;
+        }).catch(err => {
+          alert("⚠️ Toca de nuevo para permitir el audio");
+        });
+      } else {
+        bgMusic.pause();
+        soundBtn.textContent = '▶';
+        isPlaying = false;
+      }
+    });
+
+    // 💖 Botones principales
+    const btnSaber = document.getElementById('btnSaber');
+    const btnSkip = document.getElementById('btnSkip');
+    const mensajeRomantico = document.getElementById('mensajeRomantico');
+    const escenaTriste = document.getElementById('escenaTriste');
+    const btnContinuar = document.getElementById('btnContinuar');
+
+    btnSaber.addEventListener('click', () => {
+      mensajeRomantico.classList.remove('oculto');
+      escenaTriste.classList.add('oculto');
+      bgMusic.play();
+      soundBtn.textContent = '⏸';
+      isPlaying = true;
+    });
+
+    btnSkip.addEventListener('click', () => {
+      window.location.href = "skip_accion.html";
+    });
+
+    btnContinuar.addEventListener('click', () => {
+      window.location.href = "contunuar_accion.html";
+    });
+
+    // 💖 Generar corazones flotantes
+    for (let i = 0; i < 50; i++) {
+      const corazon = document.createElement("div");
+      corazon.classList.add("corazon");
+      corazon.textContent = "💖";
+      corazon.style.left = Math.random() * 100 + "vw";
+      corazon.style.animationDuration = 4 + Math.random() * 6 + "s";
+      corazon.style.fontSize = 20 + Math.random() * 30 + "px";
+      document.body.appendChild(corazon);
+    }
+  </script>
+</body>
+</html>

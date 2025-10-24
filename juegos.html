@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amor Virtual 💞 - Juegos</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<style>
+  /* --- Fondo y Título --- */
+  body {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 700% 700%;
+    animation: gradientMove 15s ease infinite;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: white;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin: 20px 0;
+    z-index: 10;
+  }
+
+  /* --- Corazones flotantes suaves --- */
+  .corazon {
+    position: absolute;
+    font-size: clamp(15px, 3vw, 30px);
+    opacity: 0.4;
+    animation: flotarCorazon 12s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes flotarCorazon {
+    from { transform: translateY(100vh) scale(1); opacity: 0.4; }
+    to { transform: translateY(-10vh) scale(0.7); opacity: 0; }
+  }
+
+  /* --- Contenedores de juegos centrados --- */
+  .juego {
+    display: none;
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin: 10px 0;
+    flex-shrink: 0;
+  }
+
+  /* --- Sopa de Letras --- */
+  #sopa {
+    display: grid;
+    grid-template-columns: repeat(12, 35px);
+    grid-gap: 4px;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .celda {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+  .celda.seleccionada { background-color: #a0e7e5; transform: scale(1.1); }
+  .celda.encontrada { background: linear-gradient(45deg, #ffeb3b, #ffc107); font-weight: bold; color: #333; transform: scale(1.2); }
+
+  #palabras-contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  #palabras { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .palabra {
+    background-color: #fff;
+    border: 2px solid #a0e7e5;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: default;
+    font-size: 12px;
+  }
+  .palabra.encontrada { background-color: #ffeb3b; border-color: #ffca28; text-decoration: line-through; }
+
+  #lapiz {
+    cursor: pointer;
+    font-size: 24px;
+    user-select: none;
+    padding: 4px;
+    border-radius: 6px;
+    border: 2px solid #a0e7e5;
+    background-color: #fff;
+    transition: 0.3s;
+  }
+  #lapiz.activo { border: 2px solid #333; background-color: #d0f0ff; }
+
+  .confeti { position: absolute; font-size: 20px; animation: caer 1.2s linear forwards; pointer-events: none; }
+  @keyframes caer { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(220px) rotate(360deg); opacity: 0; } }
+
+  /* --- Mini Test --- */
+  #quiz button {
+    margin: 5px; padding: 8px 16px;
+    border: none; border-radius: 8px;
+    background: #4A90E2; color: #fff; cursor: pointer;
+    font-size: 14px; font-weight: 600; transition: 0.3s;
+  }
+  #quiz button:hover { background: #357ABD; transform: scale(1.05); }
+  #feedback { margin-top: 10px; font-size: 16px; min-height: 24px; }
+  #score { margin-top: 5px; font-size: 14px; color: #555; }
+
+  /* --- Emoji flotante --- */
+  .emoji { position: absolute; font-size: 18px; animation: float 3s linear infinite; user-select: none; }
+  @keyframes float { 0% { transform: translateY(0) scale(1); opacity: 1; } 50% { transform: translateY(-30px) scale(1.2); opacity: 0.8; } 100% { transform: translateY(-60px) scale(1); opacity: 0; } }
+</style>
+</head>
+<body>
+
+<h1>💞 Amor Virtual 💞</h1>
+
+<!-- --- Contenedores de juegos --- -->
+<div id="sopa" class="juego">
+  <div id="sopaContainer"></div>
+  <div id="palabras-contenedor">
+    <div id="palabras"></div>
+    <span id="lapiz">✏️</span>
+  </div>
+</div>
+
+<div id="memoria" class="juego">
+  <h2>🧠 Juego de Memoria</h2>
+  <p>Próximamente aquí podrás jugar memoria con cartas personalizadas.</p>
+</div>
+
+<div id="minitest" class="juego">
+  <h2>💭 Mini Test</h2>
+  <div id="quiz">
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <div id="feedback"></div>
+    <p id="score"></p>
+  </div>
+</div>
+
+<script>
+/* --- Corazones flotantes --- */
+for(let i=0;i<30;i++){
+  const corazon=document.createElement("div");
+  corazon.classList.add("corazon");
+  corazon.textContent="💖";
+  corazon.style.left=Math.random()*100+"vw";
+  corazon.style.animationDuration=(6+Math.random()*6)+"s";
+  corazon.style.fontSize=(15+Math.random()*20)+"px";
+  document.body.appendChild(corazon);
+}
+
+/* --- Mostrar juego seleccionado --- */
+const params = new URLSearchParams(window.location.search);
+const juego = params.get('juego'); // 'sopa', 'memoria', 'minitest', 'kitty'
+if(juego){
+  const contenedor = document.getElementById(juego);
+  if(contenedor) contenedor.style.display = 'block';
+}
+
+/* --- Sopa de Letras --- */
+if(juego==='sopa'){
+const palabras=["NIGAA","NIGGA","MAJE","SIPOTA","CULONA","LOVE","SOCCER","WTF","QUEPEDO","LOCOS","VIEJO","SEÑORA","SEÑOR"];
+const tamaño=12;
+let tablero=Array.from({length:tamaño},()=>Array(tamaño).fill(""));
+let seleccionando=false;
+let posicionesPalabras={};
+
+function ponerPalabras(){ palabras.forEach(p=>{ let colocada=false; while(!colocada){ let fila=Math.floor(Math.random()*tamaño); let columna=Math.floor(Math.random()*(tamaño-p.length)); let libre=true; for(let i=0;i<p.length;i++) if(tablero[fila][columna+i]!==""){libre=false; break;} if(libre){ posicionesPalabras[p]=[]; for(let i=0;i<p.length;i++){ tablero[fila][columna+i]=p[i]; posicionesPalabras[p].push({fila,col:columna+i}); } colocada=true;} } }); }
+
+function rellenarLetras(){ const letras="ABCDEFGHIJKLMNOPQRSTUVWXYZ"; for(let i=0;i<tamaño;i++) for(let j=0;j<tamaño;j++) if(tablero[i][j]==="") tablero[i][j]=letras[Math.floor(Math.random()*letras.length)]; }
+
+function dibujarSopa(){ const sopaDiv=document.getElementById("sopaContainer"); sopaDiv.innerHTML=""; sopaDiv.style.display="grid"; sopaDiv.style.gridTemplateColumns=`repeat(${tamaño}, 35px)`; sopaDiv.style.gridGap="4px"; sopaDiv.style.justifyContent="center"; for(let i=0;i<tamaño;i++){ for(let j=0;j<tamaño;j++){ const celda=document.createElement("div"); celda.classList.add("celda"); celda.textContent=tablero[i][j]; celda.dataset.fila=i; celda.dataset.col=j; celda.addEventListener("click",()=>{ if(seleccionando && !celda.classList.contains("encontrada")){ celda.classList.toggle("seleccionada"); checkSeleccion(); } }); sopaDiv.appendChild(celda); } } }
+
+function dibujarPalabras(){ const cont=document.getElementById("palabras"); palabras.forEach(p=>{ const div=document.createElement("div"); div.classList.add("palabra"); div.textContent=p; cont.appendChild(div); }); }
+
+const lapiz=document.getElementById("lapiz");
+lapiz.addEventListener("click",()=>{ seleccionando=!seleccionando; lapiz.classList.toggle("activo",seleccionando); });
+
+function checkSeleccion(){ palabras.forEach(p=>{ const posiciones=posicionesPalabras[p]; let completa=posiciones.every(pos=>{ const celda=document.querySelector(`.celda[data-fila="${pos.fila}"][data-col="${pos.col}"]`); return celda.classList.contains("seleccionada"); }); if(completa){ posiciones.forEach(pos=>{ const celda=document.querySelector(`.celda[data-fila="${pos.fila}"][data-col="${pos.col}"]`); celda.classList.add("encontrada"); celda.classList.remove("seleccionada"); }); const lista=document.querySelectorAll(".palabra"); lista.forEach(div=>{ if(div.textContent===p) div.classList.add("encontrada"); }); confeti(); } }); }
+
+function confeti(){ const tipos=["🎉","❤️","💖","✨","🥳"]; for(let i=0;i<20;i++){ const span=document.createElement("span"); span.classList.add("confeti"); span.textContent=tipos[Math.floor(Math.random()*tipos.length)]; span.style.left=Math.random()*window.innerWidth+"px"; span.style.top="0px"; document.body.appendChild(span); setTimeout(()=>{span.remove();},1200); } }
+
+ponerPalabras();
+rellenarLetras();
+dibujarSopa();
+dibujarPalabras();
+}
+
+/* --- Mini Test --- */
+if(juego==='minitest') {
+    const questions=[
+        { question:"¿cuando fue nuestra primer cita ?", options:["11/04/2025","11/06/2024","11/4/2024"], answer:"11/4/2024" },
+        { question:"¿comida favorita?", options:["pollo con tajadas","baleadas","pollo"], answer:"baleadas" },
+        { question:"¿color favorito?", options:["rojo","negro","verde", "azul", "blanco"], answer:"negro" },
+        { question:"¿juego favorito ?", options:["fifa","cars","gta","fornite","roblox"], answer:"fifa" },
+        { question:"¿Prefieres día o noche?", options:["Día","Noche","Indiferente"], answer:"noche" },
+        { question:"¿veiculo favorito?", options:["moto","carro","bisicleta" ], answer:"moto" },
+        { question:"¿season favoria?", options:["otono","invierno","verano","primavera"], answer:"invierno" }
+    ];
+
+    let current=0;
+    let score=0;
+
+function showQuestion(){
+  if(current>=questions.length){ showResult(); return; }
+  const q=questions[current];
+  const quizDiv=document.getElementById("quiz");
+  quizDiv.classList.remove("correct","incorrect");
+  document.getElementById("question").innerText=q.question;
+  const answersDiv=document.getElementById("answers");
+  answersDiv.innerHTML="";
+  document.getElementById("feedback").innerText="";
+  q.options.forEach(option=>{
+    const btn=document.createElement("button");
+    btn.innerText=option;
+    btn.onclick=()=>checkAnswer(option,q.answer);
+    answersDiv.appendChild(btn);
+  });
+  document.getElementById("score").innerText=`Pregunta ${current+1} de ${questions.length}`;
+}
+
+function checkAnswer(selected,correct){
+  const feedback=document.getElementById("feedback");
+  const quizDiv=document.getElementById("quiz");
+  if(selected===correct){
+    feedback.innerText="¡Correcto! 😄";
+    feedback.style.color="#28a745";
+    quizDiv.classList.add("correct");
+    score++;
+  } else{
+    feedback.innerText="Incorrecto ❌";
+    feedback.style.color="#dc3545";
+    quizDiv.classList.add("incorrect");
+  }
+  setTimeout(()=>{ current++; showQuestion(); },1200);
+}
+
+function showResult(){
+  const quizDiv=document.getElementById("quiz");
+  let percentage=(score/questions.length)*100;
+  let message="";
+  let emojis=[];
+  if(percentage>=90){ message="¡Me conoces muy bien! 😎🎉💖"; emojis=["🎉","💖","😄"]; }
+  else if(percentage>=70){ message="Esperaba un poco más de ti 🤔😐"; emojis=["🤔","😐"]; }
+  else{ message="¡Qué lástima! No lo esperaba de ti 😢💔"; emojis=["😢","💔"]; }
+  quizDiv.innerHTML=`<h2>¡Juego terminado! 🎉</h2>
+    <p>Tu puntuación: ${score}/${questions.length} (${Math.round(percentage)}%)</p>
+    <p style="font-size:18px;font-weight:bold;">${message}</p>`;
+  emojis.forEach(e=>{ for(let i=0;i<10;i++){ const span=document.createElement("span"); span.className="emoji"; span.innerText=e; span.style.left=Math.random()*window.innerWidth+"px"; span.style.animationDuration=(2+Math.random()*2)+"s"; document.body.appendChild(span); setTimeout(()=>span.remove(),4000); } });
+}
+
+showQuestion();
+}
+
+</script>
+</body>
+</html>

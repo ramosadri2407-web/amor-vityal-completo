@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amor Virtual 💞</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(270deg, #ffb6c1, #ffc1e3, #a1c4fd, #c2e9fb);
+    background-size: 700% 700%;
+    animation: gradientMove 30s ease infinite;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    padding: 10px;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 192, 203, 0.8), 0 0 30px rgba(255, 105, 180, 0.6);
+    margin-top: 25px;
+    text-align: center;
+    z-index: 3;
+  }
+
+  h2#tituloEmocion {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255, 182, 193, 0.8), 0 0 24px rgba(255, 105, 180, 0.6);
+    margin-top: 15px;
+    text-align: center;
+    z-index: 3;
+  }
+
+  .cartas-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .carta {
+    width: 90%;
+    max-width: 320px;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.95) 0px,
+      rgba(255,255,255,0.95) 22px,
+      #ffe0f7 23px 24px
+    );
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    padding: 25px;
+    text-align: left;
+    font-family: 'Dancing Script', cursive;
+    animation: appear 1s ease forwards, floatSlow 6s ease-in-out infinite alternate;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes appear {
+    from { transform: scale(0.8) translateY(50px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  @keyframes floatSlow {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .carta:hover { animation-play-state: paused; }
+
+  .carta h3 {
+    color: #ff6fae;
+    margin-bottom: 10px;
+  }
+
+  .carta p {
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .like-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: clamp(2rem,6vw,2.5rem);
+    margin-top: 25px;
+    animation: pulse 1.5s infinite;
+    color: #ff4fa3;
+    z-index: 3;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  .floating-detail {
+    position: fixed;
+    bottom: -100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    animation: floatUp 10s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) translateX(0); opacity: 1; }
+    100% { transform: translateY(-120vh) translateX(var(--x-move)); opacity: 0; }
+  }
+
+  .heart {
+    position: fixed;
+    color: #ff5ca7;
+    animation: floatHeart 3s ease-in forwards;
+    pointer-events: none;
+  }
+
+  @keyframes floatHeart {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-300px) scale(1.5); opacity: 0; }
+  }
+
+  #soundBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ff4fa3;
+    color: #fff;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  #soundBtn:hover { transform: scale(1.1); background: #ff85c1; }
+  #soundBtn:active { transform: scale(0.95); }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .carta { min-height: 200px; padding: 15px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>💞 Amor Virtual 💞</h1>
+<h2 id="tituloEmocion"></h2>
+
+<div class="cartas-container" id="cartasContainer"></div>
+
+<button class="like-btn" id="likeBtn">❤️</button>
+<button id="soundBtn">▶</button>
+<audio id="bgMusic" src="https://github.com/ramosadri2407-web/audiomo3/raw/refs/heads/main/my_song.org.mp3" loop></audio>
+
+<script>
+const details = [
+  'https://i.ibb.co/8DPLGsWq/OIP-10-Picsart-Background-Remover.png',
+  'https://i.ibb.co/hF9pt6fk/OIP-9-Picsart-Background-Remover.png',
+  'https://i.ibb.co/dxJbQY9/OIP-8-Picsart-Background-Remover.png',
+  'https://i.ibb.co/fYVgLZ1Z/OIP-7-Picsart-Background-Remover.png',
+  'https://i.ibb.co/s9cjFFS6/OIP-6-Picsart-Background-Remover.png',
+  'https://i.ibb.co/hFFZdJ5c/OIP-5-Picsart-Background-Remover.png',
+  'https://cdn-icons-png.flaticon.com/512/2107/2107845.png'
+];
+
+function createDetail() {
+  const detail = document.createElement('div');
+  detail.classList.add('floating-detail');
+  const img = details[Math.floor(Math.random() * details.length)];
+  detail.style.backgroundImage = `url('${img}')`;
+  const size = 60 + Math.random() * 60;
+  detail.style.width = `${size}px`;
+  detail.style.height = `${size}px`;
+  detail.style.left = Math.random() * window.innerWidth + 'px';
+  detail.style.setProperty('--x-move', (Math.random() * 200 - 100) + 'px');
+  detail.style.animationDuration = (6 + Math.random() * 6) + 's';
+  document.body.appendChild(detail);
+  setTimeout(() => detail.remove(), 12000);
+}
+setInterval(createDetail, 800);
+
+const params = new URLSearchParams(window.location.search);
+const emocion = params.get('emocion');
+const tituloEmocion = document.getElementById("tituloEmocion");
+
+const cartas = {
+  feliz: [
+    {titulo: "💌For you baby", texto: "Hoy solo quiero recordarte lo hermoso que es verte sonreír. Tu alegría ilumina todo a tu alrededor."},
+    {titulo: "💖For you baby", texto: "Esa sonrisa tuya es mi energía favorita, la que me da motivos para seguir cada día."},
+    {titulo: "🎶For you baby", texto: "Nunca dejes que nada apague esa luz tan linda que tienes. Eres pura felicidad."}
+  ],
+  triste: [
+    {titulo: "🌧 Carta triste", texto: "A veces llorar también es sanar. Está bien no estar bien, pero nunca olvides cuánto vales."},
+    {titulo: "🩵 Carta calma", texto: "Quisiera abrazarte fuerte y recordarte que no estás sola. Todo pasará, como siempre lo hace."},
+    {titulo: "🌙 Carta esperanza", texto: "En la oscuridad también hay estrellas. Y tú, mi vida, eres una de ellas."}
+  ]
+  // Puedes agregar más emociones aquí...
+};
+
+// Mostrar carta aleatoria con tamaño dinámico
+const contenedor = document.getElementById("cartasContainer");
+if (emocion && cartas[emocion]) {
+  tituloEmocion.textContent = emocion.charAt(0).toUpperCase() + emocion.slice(1);
+  const cartaAleatoria = cartas[emocion][Math.floor(Math.random() * cartas[emocion].length)];
+  const div = document.createElement("div");
+  div.className = "carta";
+  div.innerHTML = `<h3>${cartaAleatoria.titulo}</h3><p>${cartaAleatoria.texto}</p>`;
+  
+  const textLength = cartaAleatoria.texto.length;
+  const p = div.querySelector('p');
+  if(textLength < 80) p.style.fontSize = "1.3rem";
+  else if(textLength < 160) p.style.fontSize = "1.1rem";
+  else p.style.fontSize = "1rem";
+  
+  contenedor.appendChild(div);
+} else {
+  contenedor.innerHTML = "<p>No se encontró esta emoción 😢</p>";
+}
+
+// Corazones al dar like
+const likeBtn = document.getElementById('likeBtn');
+likeBtn.addEventListener('click', () => {
+  for (let i = 0; i < 30; i++) {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.textContent = '💖';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = Math.random() * window.innerHeight + 'px';
+    heart.style.fontSize = (20 + Math.random() * 60) + 'px';
+    heart.style.opacity = Math.random() * 0.8 + 0.2;
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3000);
+  }
+});
+
+// Botón de audio
+const bgMusic = document.getElementById('bgMusic');
+const soundBtn = document.getElementById('soundBtn');
+let isPlaying = false;
+
+soundBtn.addEventListener('click', () => {
+  if (!isPlaying) { bgMusic.play(); soundBtn.textContent = '⏸'; isPlaying = true; }
+  else { bgMusic.pause(); soundBtn.textContent = '▶'; isPlaying = false; }
+});
+</script>
+
+</body>
+</html>
