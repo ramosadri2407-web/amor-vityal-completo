@@ -62,20 +62,36 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     margin: 10px 0;
     flex-shrink: 0;
+    animation: fadeIn 1s ease;
   }
 
-  /* --- Sopa de Letras --- */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* --- Sopa de Letras centrada y responsive --- */
+  #sopa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
   #sopaContainer {
     display: grid;
-    grid-template-columns: repeat(12, 35px);
-    grid-gap: 4px;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 4px;
     justify-content: center;
-    margin-bottom: 10px;
+    width: 100%;
+    max-width: 90vw;
+    animation: fadeIn 1s ease;
   }
+
   .celda {
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
+    aspect-ratio: 1 / 1;
     background-color: #fff;
     border: 1px solid #bbb;
     border-radius: 6px;
@@ -83,21 +99,30 @@
     cursor: pointer;
     user-select: none;
     font-weight: bold;
-    font-size: 14px;
+    font-size: clamp(12px, 2vw, 18px);
     transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+
   .celda.seleccionada { background-color: #a0e7e5; transform: scale(1.1); }
-  .celda.encontrada { background: linear-gradient(45deg, #ffeb3b, #ffc107); font-weight: bold; color: #333; transform: scale(1.2); }
+  .celda.encontrada {
+    background: linear-gradient(45deg, #ffeb3b, #ffc107);
+    font-weight: bold;
+    color: #333;
+    transform: scale(1.2);
+  }
 
   #palabras-contenedor {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-top: 12px;
     flex-wrap: wrap;
   }
-  #palabras { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
   .palabra {
     background-color: #fff;
     border: 2px solid #a0e7e5;
@@ -182,7 +207,7 @@ for(let i=0;i<30;i++){
 
 /* --- Mostrar juego seleccionado --- */
 const params = new URLSearchParams(window.location.search);
-const juego = params.get('juego'); // 'sopa', 'memoria', 'minitest', 'kitty'
+const juego = params.get('juego');
 if(juego){
   const contenedor = document.getElementById(juego);
   if(contenedor) contenedor.style.display = 'block';
@@ -200,7 +225,7 @@ function ponerPalabras(){ palabras.forEach(p=>{ let colocada=false; while(!coloc
 
 function rellenarLetras(){ const letras="ABCDEFGHIJKLMNOPQRSTUVWXYZ"; for(let i=0;i<tamaño;i++) for(let j=0;j<tamaño;j++) if(tablero[i][j]==="") tablero[i][j]=letras[Math.floor(Math.random()*letras.length)]; }
 
-function dibujarSopa(){ const sopaDiv=document.getElementById("sopaContainer"); sopaDiv.innerHTML=""; sopaDiv.style.display="grid"; sopaDiv.style.gridTemplateColumns=`repeat(${tamaño}, 35px)`; sopaDiv.style.gridGap="4px"; sopaDiv.style.justifyContent="center"; for(let i=0;i<tamaño;i++){ for(let j=0;j<tamaño;j++){ const celda=document.createElement("div"); celda.classList.add("celda"); celda.textContent=tablero[i][j]; celda.dataset.fila=i; celda.dataset.col=j; celda.addEventListener("click",()=>{ if(seleccionando && !celda.classList.contains("encontrada")){ celda.classList.toggle("seleccionada"); checkSeleccion(); } }); sopaDiv.appendChild(celda); } } }
+function dibujarSopa(){ const sopaDiv=document.getElementById("sopaContainer"); sopaDiv.innerHTML=""; sopaDiv.style.display="grid"; sopaDiv.style.gridTemplateColumns=`repeat(${tamaño}, 1fr)`; for(let i=0;i<tamaño;i++){ for(let j=0;j<tamaño;j++){ const celda=document.createElement("div"); celda.classList.add("celda"); celda.textContent=tablero[i][j]; celda.dataset.fila=i; celda.dataset.col=j; celda.addEventListener("click",()=>{ if(seleccionando && !celda.classList.contains("encontrada")){ celda.classList.toggle("seleccionada"); checkSeleccion(); } }); sopaDiv.appendChild(celda); } } }
 
 function dibujarPalabras(){ const cont=document.getElementById("palabras"); palabras.forEach(p=>{ const div=document.createElement("div"); div.classList.add("palabra"); div.textContent=p; cont.appendChild(div); }); }
 
@@ -282,7 +307,6 @@ function showResult(){
 
 showQuestion();
 }
-
 </script>
 </body>
 </html>
