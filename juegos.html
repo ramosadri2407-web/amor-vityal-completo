@@ -71,14 +71,45 @@
   }
 
   /* --- Sopa de Letras centrada y responsive --- */
-  #sopa {
+   #sopa {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 95%;
     max-width: 450px;
     margin: 0 auto;
-  }
+
+    /* Scroll solo en la sopa */
+    max-height: 70vh;       /* Ajusta el alto máximo de la sopa */
+    overflow-y: auto;       /* Activa scroll vertical si se desborda */
+    padding-right: 10px;    /* Para que el scroll no tape contenido */
+}
+/* Scroll personalizado para la sopa de letras */
+#sopa::-webkit-scrollbar {
+  width: 8px;
+}
+
+#sopa::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+#sopa::-webkit-scrollbar-thumb {
+  background: #4A90E2;
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+#sopa::-webkit-scrollbar-thumb:hover {
+  background: #357ABD;
+}
+
+/* Para Firefox */
+#sopa {
+  scrollbar-width: thin;
+  scrollbar-color: #4A90E2 rgba(255,255,255,0.2);
+}
+
 
   #sopaContainer {
     display: grid;
@@ -216,7 +247,7 @@ if(juego){
 /* --- Sopa de Letras --- */
 if(juego==='sopa'){
 const palabras=["NIGAA","NIGGA","MAJE","SIPOTA","CULONA","LOVE","SOCCER","WTF","QUEPEDO","LOCOS","VIEJO","SEÑORA","SEÑOR"];
-const tamaño=10;
+const tamaño=12;
 let tablero=Array.from({length:tamaño},()=>Array(tamaño).fill(""));
 let seleccionando=false;
 let posicionesPalabras={};
@@ -310,4 +341,3 @@ showQuestion();
 </script>
 </body>
 </html>
-
