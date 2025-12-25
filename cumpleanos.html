@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amor Virtual 💞</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+      background-size: 700% 700%;
+      animation: gradientMove 15s ease infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Dancing Script', cursive;
+      text-align: center;
+      color: white;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      position: absolute;
+      top: 30px;
+      font-size: 3rem;
+      text-shadow: 0 0 20px rgba(255,255,255,0.6);
+      z-index: 10;
+    }
+
+    p#mensaje1 {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.4rem;
+      color: #fff;
+      max-width: 80%;
+      opacity: 0;
+      animation: aparecer 2s ease forwards;
+      margin-top: 60px;
+      z-index: 10;
+      position: relative;
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1#mensaje2 {
+      display: none;
+      font-size: 2.5rem;
+      color: #fff;
+      text-shadow: 0 0 20px #ff80b5;
+      animation: aparecer 2s ease forwards;
+      z-index: 10;
+      position: relative;
+    }
+
+    #btnNext {
+      display: none;
+      background: #ff80b5;
+      border: none;
+      color: white;
+      font-size: 1.4rem;
+      padding: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(255, 192, 203, 0.8);
+      animation: latir 0.6s infinite;
+      z-index: 10;
+      position: absolute;
+      transition: transform 0.3s ease;
+    }
+
+    #btnNext span {
+      display: block;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      margin-top: 4px;
+      text-shadow: 0 0 10px white;
+    }
+
+    @keyframes latir {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+    }
+
+    .flotante {
+      position: absolute;
+      bottom: -10vh;
+      animation: flotar linear infinite;
+      opacity: 0.8;
+      text-shadow: 0 0 8px rgba(255,255,255,0.8);
+      z-index: 1;
+    }
+
+    @keyframes flotar {
+      from { transform: translateY(0) rotate(0deg); opacity: 1; }
+      to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+    }
+
+    .imagen-flotante {
+      position: absolute;
+      width: 120px;
+      opacity: 0;
+      transform: scale(0.7);
+      z-index: 2;
+      animation: aparecerSuave 1s ease forwards, palpitar 2.5s infinite ease-in-out alternate;
+    }
+
+    @keyframes aparecerSuave {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes palpitar {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.15); }
+    }
+
+    #soundBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #2c3e50;
+      color: #f0f0f0;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    #soundBtn:hover { transform: scale(1.1); background: #34495e; }
+    #soundBtn:active { transform: scale(0.95); }
+
+    /* 🔽 RESPONSIVE - Adaptación a cualquier dispositivo */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    img, video, iframe {
+      max-width: 100%;
+      height: auto;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    h1, h2, h3, p, button {
+      word-wrap: break-word;
+      max-width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      header { font-size: 2.3rem; top: 20px; }
+      p#mensaje1 { font-size: 1.2rem; }
+      h1#mensaje2 { font-size: 2rem; }
+      #btnNext { padding: 25px; font-size: 1.1rem; }
+      .imagen-flotante { width: 80px; }
+    }
+
+    @media (max-width: 480px) {
+      header { font-size: 1.9rem; top: 15px; }
+      p#mensaje1 { font-size: 1rem; }
+      h1#mensaje2 { font-size: 1.6rem; }
+      #btnNext { padding: 20px; font-size: 1rem; }
+      .imagen-flotante { width: 65px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>💌 Amor Virtual 💌</header>
+
+  <p id="mensaje1">“Un rincón solo para ti, donde cada click tiene una sorpresa 💌”</p>
+  <h1 id="mensaje2">🎉 HAPPY BIRTHDAY BABY 🎉</h1>
+  <button id="btnNext">❤️<span>Tócame 💕</span></button>
+
+  <audio id="bgMusic" src="https://raw.githubusercontent.com/ramosadri2407-web/audiomo3/main/Happy%20Birthday%20(Piano%20Version).mp3" loop></audio>
+  <button id="soundBtn">▶</button>
+<script>
+const bgMusic = document.getElementById('bgMusic');
+const soundBtn = document.getElementById('soundBtn');
+const btnNext = document.getElementById('btnNext');
+let isPlaying = false;
+
+// Función para intentar reproducir música automáticamente
+function startMusic() {
+  if (!isPlaying) {
+    bgMusic.volume = 0.4;
+    bgMusic.play().then(() => {
+      isPlaying = true;
+      soundBtn.textContent = '⏸';
+    }).catch(()=>{}); // si el navegador bloquea autoplay, no hace nada
+  }
+}
+
+// Autoplay al cargar la página o al tocar/click
+window.addEventListener('load', startMusic);
+document.addEventListener('click', startMusic);
+document.addEventListener('touchstart', startMusic);
+
+// Botón de play/pausa
+soundBtn.addEventListener('click', () => {
+  if (!isPlaying) {
+    bgMusic.play();
+    soundBtn.textContent = '⏸';
+    isPlaying = true;
+  } else {
+    bgMusic.pause();
+    soundBtn.textContent = '▶';
+    isPlaying = false;
+  }
+});
+
+// --- Animaciones de corazones y flotantes ---
+function moverCorazon() {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 100);
+  btnNext.style.left = `${x}px`;
+  btnNext.style.top = `${y}px`;
+}
+
+function iniciarMovimiento() {
+  setInterval(moverCorazon, 700);
+}
+
+function generarGlobosYCorazones() {
+  const cantidad = 100;
+  for (let i = 0; i < cantidad; i++) {
+    setTimeout(() => {
+      const corazon = document.createElement('div');
+      corazon.textContent = '💖';
+      corazon.classList.add('flotante');
+      corazon.style.left = Math.random() * 100 + 'vw';
+      corazon.style.animationDuration = (10 + Math.random() * 6) + 's';
+      corazon.style.fontSize = (2.5 + Math.random() * 3) + 'em';
+      document.body.appendChild(corazon);
+    }, i * 25);
+  }
+}
+
+function generarImagenesFlotantes() {
+  const imagenes = [
+    'https://i.ibb.co/8DPLGsWq/OIP-10-Picsart-Background-Remover.png',
+    'https://i.ibb.co/hF9pt6fk/OIP-9-Picsart-Background-Remover.png',
+    'https://i.ibb.co/dxJbQY9/OIP-8-Picsart-Background-Remover.png',
+    'https://i.ibb.co/fYVgLZ1Z/OIP-7-Picsart-Background-Remover.png',
+    'https://i.ibb.co/s9cjFFS6/OIP-6-Picsart-Background-Remover.png',
+    'https://i.ibb.co/hFFZdJ5c/OIP-5-Picsart-Background-Remover.png'
+  ];
+  imagenes.forEach((src, index) => {
+    setTimeout(() => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.classList.add('imagen-flotante');
+      img.style.top = Math.random() * 80 + 'vh';
+      img.style.left = Math.random() * 80 + 'vw';
+      img.style.animationDelay = `${index * 0.3}s`;
+      document.body.appendChild(img);
+    }, index * 200);
+  });
+}
+
+// Mostrar mensajes y animaciones al iniciar
+setTimeout(() => {
+  const mensaje1 = document.getElementById("mensaje1");
+  const mensaje2 = document.getElementById("mensaje2");
+
+  mensaje1.style.opacity = 0;
+  setTimeout(() => {
+    mensaje1.style.display = "none";
+    mensaje2.style.display = "block";
+    mensaje2.style.opacity = 1;
+
+    generarGlobosYCorazones();
+    generarImagenesFlotantes();
+
+    setTimeout(() => {
+      btnNext.style.display = "block";
+      moverCorazon();
+      iniciarMovimiento();
+    }, 3000);
+  }, 2000);
+}, 4000);
+
+// Botón de acción
+btnNext.addEventListener("click", () => {
+  window.location.href = "accion_next.html";
+});
+</script>
+
+</body>
+</html>
