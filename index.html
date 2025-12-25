@@ -1,297 +1,496 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Amor Virtual 💞</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Laberinto — P1</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+<style>
+  body{
+    background:#000;
+    color:#fff;
+    font-family:Arial;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+  }
+  .menu, .game-container{
+    text-align:center;
+  }
+  .btn{
+    padding:12px 20px;
+    background:white;
+    color:black;
+    border:none;
+    font-size:20px;
+    margin:10px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+  }
+  canvas{
+    border:5px solid white;
+    background:black;
+  }
+  #backBtn{
+    position:fixed;
+    top:20px;
+    left:20px;
+    padding:10px 18px;
+    font-size:16px;
+    display:none;
+  }
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
-      background-size: 700% 700%;
-      animation: gradientMove 15s ease infinite;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Dancing Script', cursive;
-      text-align: center;
-      color: white;
-      overflow: hidden;
-      position: relative;
-    }
+  /* === CONTROLES TÁCTILES === */
+  #controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+  }
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+  #btn-up{
+    position: absolute;
+    top: 35%;
+    left: 30%;
+    transform: translateX(100%);
+    width:60px;
+    height:30px;
+    font-size:22px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.20);
+    color:white;
+    border:1px solid rgba(255,255,255,0.4);
+    backdrop-filter: blur(6px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
 
-    header {
-      position: absolute;
-      top: 30px;
-      font-size: 3rem;
-      text-shadow: 0 0 20px rgba(255,255,255,0.6);
-      z-index: 10;
-    }
+  #btn-left{
+    position:absolute;
+    top: 35%;
+    left: 70px;
+    transform: translateY(100%);
+    width:60px;
+    height:30px;
+    font-size:24px;
+    border-radius:50%;
+    background:rgba(0,0,0,0.45);
+    color:#00eaff;
+    border:2px solid #00eaff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
 
-    p#mensaje1 {
-      font-family: 'Quicksand', sans-serif;
-      font-size: 1.4rem;
-      color: #fff;
-      max-width: 80%;
-      opacity: 0;
-      animation: aparecer 2s ease forwards;
-      margin-top: 60px;
-      z-index: 10;
-      position: relative;
-    }
+  #btn-right{
+    position:absolute;
+    top: 35%;
+    right: 20px;
+    transform: translateY(100%);
+    width:60px;
+    height:30px;
+    font-size:26px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.10);
+    color:#ffd700;
+    border:1px solid #ffd700;
+    box-shadow:0 0 8px #ffd700;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
 
-    @keyframes aparecer {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+  #btn-down{
+    position:absolute;
+    bottom: 35%;
+    left: 30%;
+    transform: translateX(100%);
+    width:60px;
+    height:30px;
+    font-size:22px;
+    border-radius:12px;
+    background:rgba(255,0,90,0.30);
+    color:white;
+    border:1px solid rgba(255,0,90,0.6);
+    backdrop-filter: blur(8px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
 
-    h1#mensaje2 {
-      display: none;
-      font-size: 2.5rem;
-      color: #fff;
-      text-shadow: 0 0 20px #ff80b5;
-      animation: aparecer 2s ease forwards;
-      z-index: 10;
-      position: relative;
-    }
+  #controls-row{
+    display:flex;
+    justify-content:center;
+  }
+  .ctrl-btn{
+    cursor:pointer;
+    user-select:none;
+  }
 
-    #btnNext {
-      display: none;
-      background: #ff80b5;
-      border: none;
-      color: white;
-      font-size: 1.4rem;
-      padding: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 0 25px rgba(255, 192, 203, 0.8);
-      animation: latir 0.6s infinite;
-      z-index: 10;
-      position: absolute;
-      transition: transform 0.3s ease;
-    }
+  /* === GAME OVER PIXEL === */
+  #gameOverBox {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.65);
+    z-index:9999;
+  }
 
-    #btnNext span {
-      display: block;
-      font-family: 'Quicksand', sans-serif;
-      font-size: 1rem;
-      margin-top: 4px;
-      text-shadow: 0 0 10px white;
-    }
+  #gameOverText{
+    font-family: "Press Start 2P", monospace;
+    font-size:40px;
+    color:#ff0040;
+    text-shadow: 0 0 10px #ff0040;
+  }
 
-    @keyframes latir {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.4); }
-    }
-
-    .flotante {
-      position: absolute;
-      bottom: -10vh;
-      animation: flotar linear infinite;
-      opacity: 0.8;
-      text-shadow: 0 0 8px rgba(255,255,255,0.8);
-      z-index: 1;
-    }
-
-    @keyframes flotar {
-      from { transform: translateY(0) rotate(0deg); opacity: 1; }
-      to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
-    }
-
-    .imagen-flotante {
-      position: absolute;
-      width: 120px;
-      opacity: 0;
-      transform: scale(0.7);
-      z-index: 2;
-      animation: aparecerSuave 1s ease forwards, palpitar 2.5s infinite ease-in-out alternate;
-    }
-
-    @keyframes aparecerSuave {
-      from { opacity: 0; transform: scale(0.7); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes palpitar {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.15); }
-    }
-
-    #soundBtn {
-      position: fixed;
-      bottom: 25px;
-      right: 25px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: #2c3e50;
-      color: #f0f0f0;
-      font-size: 28px;
-      cursor: pointer;
-      z-index: 9999;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.3s ease;
-    }
-
-    #soundBtn:hover { transform: scale(1.1); background: #34495e; }
-    #soundBtn:active { transform: scale(0.95); }
-
-    /* 🔽 RESPONSIVE - Adaptación a cualquier dispositivo */
-    html, body {
-      max-width: 100%;
-      overflow-x: hidden;
-      margin: 0;
-      padding: 0;
-    }
-
-    img, video, iframe {
-      max-width: 100%;
-      height: auto;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    h1, h2, h3, p, button {
-      word-wrap: break-word;
-      max-width: 100%;
-    }
-
-    @media (max-width: 768px) {
-      header { font-size: 2.3rem; top: 20px; }
-      p#mensaje1 { font-size: 1.2rem; }
-      h1#mensaje2 { font-size: 2rem; }
-      #btnNext { padding: 25px; font-size: 1.1rem; }
-      .imagen-flotante { width: 80px; }
-    }
-
-    @media (max-width: 480px) {
-      header { font-size: 1.9rem; top: 15px; }
-      p#mensaje1 { font-size: 1rem; }
-      h1#mensaje2 { font-size: 1.6rem; }
-      #btnNext { padding: 20px; font-size: 1rem; }
-      .imagen-flotante { width: 65px; }
-    }
-  </style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+</style>
 </head>
 
 <body>
-  <header>💌 Amor Virtual 💌</header>
 
-  <p id="mensaje1">“Un rincón solo para ti, donde cada click tiene una sorpresa 💌”</p>
-  <h1 id="mensaje2">🎉 HAPPY BIRTHDAY BABY 🎉</h1>
-  <button id="btnNext">❤️<span>Tócame 💕</span></button>
+<!-- ================= PORTADA TEMPORAL ================= -->
+<div id="portadaTemp" style="
+  position:fixed;
+  top: 0;; left:0;
+  width:100%; height:100%;
+  background: linear-gradient(120deg, #1b1b2f, #162447, #1f4068, #e43f5a);
+  background-size:300% 300%;
+  animation: portadaGradient 10s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  font-family:'Dancing Script', cursive;
+  color:white;
+  text-align:center;
+  z-index:999999;
+">
 
-  <audio id="bgMusic" src="https://raw.githubusercontent.com/ramosadri2407-web/audiomo3/main/Happy%20Birthday%20(Piano%20Version).mp3" loop></audio>
-  <button id="soundBtn">▶</button>
+ <h1 style="
+  position:absolute;
+  top:10px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:3rem;
+  text-shadow:0 0 20px rgba(255,255,255,0.7);
+">
+  💌 Amor Virtual 💌
+</h1>
 
-  <script>
-    const bgMusic = document.getElementById('bgMusic');
-    const soundBtn = document.getElementById('soundBtn');
-    const btnNext = document.getElementById('btnNext');
-    let isPlaying = false;
+  <p style="font-size:2rem; width:80%; margin-top:20px;">
+    Completa los próximos desafíos para ver el contenido
+  </p>
 
-    soundBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        bgMusic.volume = 0.4;
-        bgMusic.play().then(() => {
-          soundBtn.textContent = '⏸';
-          isPlaying = true;
-        }).catch(() => alert("⚠️ Toca de nuevo para permitir el audio"));
-      } else {
-        bgMusic.pause();
-        soundBtn.textContent = '▶';
-        isPlaying = false;
+</div>
+
+<style>
+@keyframes portadaGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+<!-- ================= MENU ================ -->
+<div id="menu" class="menu">
+  <h1>Elige un Jugador</h1>
+  <button class="btn" onclick="startGame('P1')">Jugar P1</button>
+</div>
+
+<!-- ================= JUEGO ================ -->
+<div id="game" class="game-container" style="display:none;">
+  <h2 id="label"></h2>
+  <canvas id="canvas" width="560" height="520"></canvas>
+</div>
+
+<button id="backBtn" class="btn" onclick="volverMenu()">Volver</button>
+
+<!-- ============= CONTROLES TÁCTILES ============= -->
+<div id="controls">
+  
+  <button id="btn-up" class="ctrl-btn" onclick="touchMove('up')">▲</button>
+
+  <div id="controls-row">
+    <button id="btn-left" class="ctrl-btn" onclick="touchMove('left')">◀</button>
+    <button id="btn-right" class="ctrl-btn" onclick="touchMove('right')">▶</button>
+  </div>
+
+  <button id="btn-down" class="ctrl-btn" onclick="touchMove('down')">▼</button>
+
+</div>
+
+<!-- ====== GAME OVER POPUP ====== -->
+<div id="gameOverBox">
+    <div id="gameOverText">GAME<br>OVER</div>
+</div>
+
+<script>
+
+/* ======================= FADE ====================== */
+function fadeOut(callback){
+    const fade = document.createElement("div");
+    fade.id = "fadeLayer";
+    fade.style.position = "fixed";
+    fade.style.top = 0;
+    fade.style.left = 0;
+    fade.style.width = "100%";
+    fade.style.height = "100%";
+    fade.style.background = "black";
+    fade.style.opacity = 0;
+    fade.style.transition = "opacity 0.3s";
+    fade.style.zIndex = 99999;
+    document.body.appendChild(fade);
+
+    setTimeout(()=> fade.style.opacity = 1, 10);
+
+    setTimeout(()=>{
+        callback();
+        fade.style.opacity = 0;
+        setTimeout(()=> fade.remove(), 300);
+    }, 350);
+}
+
+/* ======================= MAZE CLASS ========================== */
+class Maze {
+  constructor(cols, rows, cellSize, offset){
+    this.cols=cols; 
+    this.rows=rows;
+    this.s=cellSize;
+    this.o=offset;
+    this.grid=[];
+    this.stack=[];
+    this.gen();
+  }
+
+  gen(){
+    for(let y=0;y<this.rows;y++){
+      const row=[];
+      for(let x=0;x<this.cols;x++){
+        row.push({x,y,w:[true,true,true,true],v:false});
       }
-    });
-
-    function moverCorazon() {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 100);
-      btnNext.style.left = `${x}px`;
-      btnNext.style.top = `${y}px`;
+      this.grid.push(row);
     }
 
-    function iniciarMovimiento() {
-      setInterval(moverCorazon, 700);
-    }
+    let current=this.grid[0][0];
+    current.v=true;
+    this.stack=[current];
 
-    function generarGlobosYCorazones() {
-      const cantidad = 100;
-      for (let i = 0; i < cantidad; i++) {
-        setTimeout(() => {
-          const corazon = document.createElement('div');
-          corazon.textContent = '💖';
-          corazon.classList.add('flotante');
-          corazon.style.left = Math.random() * 100 + 'vw';
-          corazon.style.animationDuration = (10 + Math.random() * 6) + 's';
-          corazon.style.fontSize = (2.5 + Math.random() * 3) + 'em';
-          document.body.appendChild(corazon);
-        }, i * 25);
+    while(this.stack.length){
+      let c=this.stack[this.stack.length-1];
+      let n=this.unv(c);
+      if(n){
+        n.v=true;
+        this.rm(c,n);
+        this.stack.push(n);
+      } else this.stack.pop();
+    }
+  }
+
+  unv(c){
+    let {x,y}=c;
+    let ns=[];
+    if(y>0 && !this.grid[y-1][x].v) ns.push(this.grid[y-1][x]);
+    if(x<this.cols-1 && !this.grid[y][x+1].v) ns.push(this.grid[y][x+1]);
+    if(y<this.rows-1 && !this.grid[y+1][x].v) ns.push(this.grid[y+1][x]);
+    if(x>0 && !this.grid[y][x-1].v) ns.push(this.grid[y][x-1]);
+    if(!ns.length) return null;
+    return ns[Math.floor(Math.random()*ns.length)];
+  }
+
+  rm(a,b){
+    let dx=a.x-b.x, dy=a.y-b.y;
+    if(dx===1){ a.w[3]=false; b.w[1]=false; }
+    if(dx===-1){ a.w[1]=false; b.w[3]=false; }
+    if(dy===1){ a.w[0]=false; b.w[2]=false; }
+    if(dy===-1){ a.w[2]=false; b.w[0]=false; }
+  }
+
+  draw(ctx){
+    ctx.strokeStyle="#fff";
+    ctx.lineWidth=6;
+
+    const s=this.s, o=this.o;
+
+    for(let y=0;y<this.rows;y++){
+      for(let x=0;x<this.cols;x++){
+        let c=this.grid[y][x];
+        let px=o+x*s;
+        let py=o+y*s;
+
+        if(c.w[0]){ ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(px+s,py); ctx.stroke(); }
+        if(c.w[1]){ ctx.beginPath(); ctx.moveTo(px+s,py); ctx.lineTo(px+s,py+s); ctx.stroke(); }
+        if(c.w[2]){ ctx.beginPath(); ctx.moveTo(px+s,py+s); ctx.lineTo(px,py+s); ctx.stroke(); }
+        if(c.w[3]){ ctx.beginPath(); ctx.moveTo(px,py+s); ctx.lineTo(px,py); ctx.stroke(); }
       }
     }
+  }
 
-    function generarImagenesFlotantes() {
-      const imagenes = [
-        'https://i.ibb.co/8DPLGsWq/OIP-10-Picsart-Background-Remover.png',
-        'https://i.ibb.co/hF9pt6fk/OIP-9-Picsart-Background-Remover.png',
-        'https://i.ibb.co/dxJbQY9/OIP-8-Picsart-Background-Remover.png',
-        'https://i.ibb.co/fYVgLZ1Z/OIP-7-Picsart-Background-Remover.png',
-        'https://i.ibb.co/s9cjFFS6/OIP-6-Picsart-Background-Remover.png',
-        'https://i.ibb.co/hFFZdJ5c/OIP-5-Picsart-Background-Remover.png'
-      ];
-      imagenes.forEach((src, index) => {
-        setTimeout(() => {
-          const img = document.createElement('img');
-          img.src = src;
-          img.classList.add('imagen-flotante');
-          img.style.top = Math.random() * 80 + 'vh';
-          img.style.left = Math.random() * 80 + 'vw';
-          img.style.animationDelay = `${index * 0.3}s`;
-          document.body.appendChild(img);
-        }, index * 200);
-      });
+  isFree(px,py){
+    const s=this.s,o=this.o;
+    const maxX=o+this.cols*s,maxY=o+this.rows*s;
+    if(px<o+4 || py<o+4 || px>maxX-4 || py>maxY-4) return false;
+
+    let cx=Math.floor((px-o)/s);
+    let cy=Math.floor((py-o)/s);
+    if(cx<0||cy<0||cx>=this.cols||cy>=this.rows) return false;
+
+    let c=this.grid[cy][cx];
+    let lx=px-(o+cx*s), ly=py-(o+cy*s);
+    let pad=5;
+
+    if(c.w[0]&&ly<=pad) return false;
+    if(c.w[2]&&ly>=s-pad) return false;
+    if(c.w[3]&&lx<=pad) return false;
+    if(c.w[1]&&lx>=s-pad) return false;
+
+    return true;
+  }
+}
+
+/* ================= GAME STATE ==================== */
+let maze, ctx, cvs;
+let player={x:0,y:0,color:"#0f0",r:7};
+let playing=null;
+let finishedP1=false;
+let goalX, goalY;
+let running=false;
+
+const cols=21, rows=17, cellSize=22, offset=14;
+
+/* ============== GAME START ====================== */
+function startGame(p){
+
+  running = false;
+
+  fadeOut(()=>{
+
+    document.getElementById("menu").style.display="none";
+    document.getElementById("game").style.display="block";
+    document.getElementById("controls").style.display="block";
+
+    playing=p;
+    document.getElementById("label").innerHTML="Jugador " + p;
+
+    cvs=document.getElementById("canvas");
+    ctx=cvs.getContext("2d");
+
+    maze=new Maze(cols,rows,cellSize,offset);
+
+    player.x=offset+cellSize/2;
+    player.y=offset+cellSize/2;
+    player.color="#00e676";
+    goalX=offset+(cols-1)*cellSize+cellSize/2;
+    goalY=offset+(rows-1)*cellSize+cellSize/2;
+
+    if(!running){
+      running=true;
+      update();
     }
+  });
+}
 
-    setTimeout(() => {
-      const mensaje1 = document.getElementById("mensaje1");
-      const mensaje2 = document.getElementById("mensaje2");
+/* ============= DIBUJO ================ */
+function draw(){
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,cvs.width,cvs.height);
 
-      mensaje1.style.opacity = 0;
-      setTimeout(() => {
-        mensaje1.style.display = "none";
-        mensaje2.style.display = "block";
-        mensaje2.style.opacity = 1;
+  maze.draw(ctx);
 
-        generarGlobosYCorazones();
-        generarImagenesFlotantes();
+  ctx.fillStyle="yellow";
+  ctx.beginPath();
+  ctx.arc(goalX,goalY,8,0,Math.PI*2);
+  ctx.fill();
 
-        setTimeout(() => {
-          btnNext.style.display = "block";
-          moverCorazon();
-          iniciarMovimiento();
-        }, 3000);
-      }, 2000);
-    }, 4000);
+  ctx.fillStyle=player.color;
+  ctx.beginPath();
+  ctx.arc(player.x,player.y,player.r,0,Math.PI*2);
+  ctx.fill();
+}
 
-    btnNext.addEventListener("click", () => {
-      window.location.href = "accion_next.html";
-    });
-  </script>
+/* ============= MOVIMIENTO =============== */
+let keys={};
+document.addEventListener("keydown",e=>keys[e.key]=true);
+document.addEventListener("keyup",e=>keys[e.key]=false);
+
+function touchMove(dir){
+  keys={};
+  keys["Arrow"+dir.charAt(0).toUpperCase()+dir.slice(1)] = true;
+  setTimeout(()=>keys={},120);
+}
+
+function move(){
+  let sp=2.3, dx=0, dy=0;
+
+  if(keys["ArrowUp"]) dy-=sp;
+  if(keys["ArrowDown"]) dy+=sp;
+  if(keys["ArrowLeft"]) dx-=sp;
+  if(keys["ArrowRight"]) dx+=sp;
+
+  if(dx&&dy){ dx*=0.7; dy*=0.7; }
+
+  let nx=player.x+dx, ny=player.y+dy;
+  if(maze.isFree(nx,ny)){ player.x=nx; player.y=ny; }
+
+  if(Math.hypot(player.x-goalX,player.y-goalY) < 12){
+    ganaste();
+  }
+}
+
+/* ============= LOOP ================== */
+function update(){
+  if(!running) return;
+  move();
+  draw();
+  requestAnimationFrame(update);
+}
+
+/* ============= GANASTE SOLO P1 ============== */
+function ganaste(){
+
+  if(navigator.vibrate){
+    navigator.vibrate([200, 100, 200]);
+  }
+
+  const box = document.getElementById("gameOverBox");
+  const text = document.getElementById("gameOverText");
+
+  text.innerHTML = "DISFRUTA";
+  text.style.color = "#00ffea";
+  text.style.textShadow = "0 0 15px #00fff2";
+
+  box.style.display = "flex";
+  box.style.opacity = "1";
+
+  finishedP1 = true;
+
+  setTimeout(()=>{
+      window.location.href = "welcome.html";
+  }, 1500);
+
+}
+
+/* ====== OCULTAR PORTADA TEMPORAL ====== */
+window.onload = () => {
+  const portada = document.getElementById("portadaTemp");
+  setTimeout(() => {
+    portada.style.transition = "opacity 3s";
+    portada.style.opacity = "0";
+    setTimeout(() => portada.remove(), 5000);
+  }, 5000);
+};
+
+</script>
+
 </body>
 </html>
+
+
