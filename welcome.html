@@ -1,1 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amor Virtual 💞</title>
+
+  <!-- FUENTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* =========================== FONDO =========================== */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #1b1b2f, #162447, #1f4068, #e43f5a);
+      background-size: 300% 300%;
+      animation: gradientMove 12s ease infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Dancing Script', cursive;
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+      padding-top: 140px;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      position: absolute;
+      top: 30px;
+      font-size: 3rem;
+      text-shadow: 0 0 20px rgba(255,255,255,0.6);
+      z-index: 10;
+    }
+
+    /* =========================== MENÚ EVENTOS =========================== */
+    .event-wrapper {
+      position: absolute;
+      top: 30px;
+      left: 20%;
+      transform: translateX(-50%);
+      z-index: 1000;
+    }
+
+    .event-btn {
+      font-family: 'Great Vibes', cursive;
+      font-size: 45px;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid white;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 15px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+    }
+#eventMenu {
+  display: flex;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  margin-top: 15px;
+  flex-direction: column;
+  gap: 10px;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#eventMenu.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+    .event-btn {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s;
+}
+
+.event-btn:active {
+  transform: scale(0.92);
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+
+    /* =========================== TIRA DE PELÍCULA =========================== */
+  .filmstrip-vertical {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 140px;
+  height: 100vh;
+  background: #000;
+  padding: 10px 5px;
+  border-left: 6px solid #111;
+  overflow: hidden;
+  z-index: 1200;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.6);
+}
+
+.filmstrip-track {
+  display: flex;
+  flex-direction: column;
+  animation: rollFilm 20s linear infinite; /* velocidad suave */
+}
+
+.film-cell {
+  width: 120px;
+  height: 160px;
+  background: white;
+  border: 8px solid black;
+  border-radius: 8px;
+  margin: 10px auto;
+  overflow: hidden;
+}
+
+.film-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* animación infinita suave */
+@keyframes rollFilm {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); } /* mueve la mitad de la lista, luego loop */
+}
+
+    /* =========================== REPRODUCTOR =========================== */
+ .cinema-player {
+  width: 200px;
+  background: radial-gradient(circle, #2b2b2b, #0f0f0f);
+  border: 2px solid #7e0050;
+  border-radius: 14px;
+  padding: 70px;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.8),
+              0 8px 20px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Marco tipo fotograma */
+.film-frame {
+  width: 250px;
+  height: 280px;
+  background: #000;
+  border: 3px solid #7e0050;
+  border-radius: 6px;
+  padding: 4px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+.film-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: sepia(15%) contrast(1.05);
+}
+
+/* Controles */
+.cinema-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cinema-controls button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #7e0050;
+  border: none;
+  color: #1a1a1a;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: inset -2px -2px 4px rgba(0,0,0,0.4);
+}
+
+/* Barra de progreso tipo cinta */
+.progress {
+  width: 120%;
+  height: 6px;
+  background: #3a3a3a;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #ff00d9, #ff00d9);
+}
+
+
+    /* =========================== CÁMARA =========================== */
+.camera-frame {
+  width: 80%;
+  max-width: 500px;
+  background: #111;
+  padding: 15px;
+  margin: 40px auto 60px auto;
+  border-radius: 12px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.camera-inner {
+  width: 100%;
+  height: 650px; /* vertical */
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.camera-inner .slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  animation: cameraFade 12s infinite; /* 4 imágenes x 3s cada una */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.camera-inner .slide img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain; /* ajusta sin recortar */
+  border-radius: 5px;
+}
+
+/* Delay para cada imagen */
+.camera-inner .slide:nth-child(1){ animation-delay: 0s; }
+.camera-inner .slide:nth-child(2){ animation-delay: 3s; }
+.camera-inner .slide:nth-child(3){ animation-delay: 6s; }
+.camera-inner .slide:nth-child(4){ animation-delay: 9s; }
+
+/* Animación más sutil */
+@keyframes cameraFade {
+  0% { opacity: 0; transform: scale(1); }
+  10% { opacity: 1; transform: scale(1.02); } /* leve zoom para suavidad */
+  40% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0; transform: scale(1); }
+  100% { opacity: 0; }
+}
+
+  </style>
+</head>
+
+<body>
+
+<header>💌 Amor Virtual 💌</header>
+<!-- MENÚ -->
+<div class="event-wrapper">
+  <button id="eventToggle" class="event-btn">Eventos</button>
+  <div id="eventMenu">
+    <button class="event-btn" onclick="location.href='cumpleanos.html'">Cumpleaños 🎂</button>
+    <button class="event-btn" onclick="location.href='aniversario.html'">Aniversario 💑</button>
+    <button class="event-btn" onclick="location.href='meses.html'">Meses 📅</button>
+  </div>
+</div>
+
+<!-- REPRODUCTOR (ahora arriba) -->
+<div class="cinema-player">
+  <div class="film-frame">
+    <img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur.jpg">
+  </div>
+
+  <div class="cinema-controls">
+    <button id="playBtn">▶</button>
+    <div class="progress">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <audio id="audio">
+    <source src="https://github.com/ramosadri2407-web/pictores/raw/refs/heads/main/ssstik.io_1766250106783.mp3">
+  </audio>
+</div>
+
+<!-- CÁMARA (ahora abajo y más vertical) -->
+<div class="camera-frame">
+  <div class="camera-inner">
+    <div class="slide"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(10).jpg"></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(2).jpg"></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(3).jpg"></div>
+    <div class="slide"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(4).jpg"></div>
+  </div>
+</div>
+
+
+<!-- TIRA DE PELÍCULA -->
+<div class="filmstrip-vertical">
+  <div class="filmstrip-track">
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(5).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(6).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(7).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(8).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(9).jpg"></div>
+
+    <!-- Loop -->
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(5).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(6).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(7).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(8).jpg"></div>
+    <div class="film-cell"><img src="https://raw.githubusercontent.com/ramosadri2407-web/pictores/refs/heads/main/undefined%20-%20Imgur%20(9).jpg"></div>
+  </div>
+</div>
+
+<script>
+const eventToggle = document.getElementById('eventToggle');
+const eventMenu = document.getElementById('eventMenu');
+
+eventToggle.addEventListener('click', () => {
+  eventMenu.classList.toggle('show');
+
+  // animación sutil del botón
+  eventToggle.style.transform = 'scale(1.08)';
+  setTimeout(() => {
+    eventToggle.style.transform = 'scale(1)';
+  }, 200);
+});
+</script>
+
+<script>
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('playBtn');
+const progressFill = document.getElementById('progressFill');
+
+playBtn.onclick = () => {
+  if (audio.paused) {
+    audio.play();
+    playBtn.textContent = "❚❚";
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
+  }
+};
+
+audio.addEventListener('timeupdate', () => {
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressFill.style.width = percent + "%";
+});
+</script>
+
+</body>
+</html>
 
