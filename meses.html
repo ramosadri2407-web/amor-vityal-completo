@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amor Virtual 💞</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@500&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(120deg, #1b1b2f, #162447, #1f4068, #e43f5a);
+    background-size: 300% 300%;
+    animation: gradientMove 12s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    font-family: 'Dancing Script', cursive;
+    flex-direction: column;
+    color: white;
+    overflow: hidden;
+    position: relative;
+  }
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  header {
+    position: absolute;
+    top: 30px;
+    font-size: 3rem;
+    text-shadow: 0 0 20px rgba(255,255,255,0.6);
+    z-index: 10;
+  }
+
+  #waitingText {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: #ffd1dc;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4, 0 0 30px #ff1493;
+    opacity: 0;
+    animation: fadeInText 2s ease forwards 1s;
+    margin-top: 120px;
+    z-index: 10;
+    text-align: center;
+  }
+  @keyframes fadeInText {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #calendar {
+    margin-top: 30px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    width: 90%;
+    max-width: 700px;
+  }
+  #calendar h2 {
+    font-family: 'Quicksand', sans-serif;
+    margin-bottom: 20px;
+    font-size: 2.2rem;
+    color: #ffebeb;
+    text-shadow: 0 0 15px #ff69b4;
+  }
+  #calendar table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  #calendar th, #calendar td {
+    width: 14.28%;
+    padding: 20px 0;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+  #calendar td:hover { background: rgba(255,255,255,0.2); cursor: pointer; }
+  .highlight {
+    background: #ff69b4;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #ff1493;
+  }
+
+  #soundBtn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    background: #2c3e50;
+    color: #f0f0f0;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.3s ease;
+  }
+  #soundBtn:hover { transform: scale(1.1); background: #34495e; }
+  #soundBtn:active { transform: scale(0.95); }
+</style>
+</head>
+
+<body>
+
+<header>💌 Amor Virtual 💌</header>
+<div id="waitingText">Waiting Baby 💖</div>
+
+<div id="calendar">
+  <h2>Enero 2026</h2>
+  <table>
+    <thead>
+      <tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr>
+    </thead>
+    <tbody>
+      <tr><td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td></tr>
+      <tr><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>
+      <tr><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td></tr>
+      <tr><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td></tr>
+      <tr><td class="highlight">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<audio id="bgMusic" src="https://github.com/ramosadri2407-web/pictores/raw/refs/heads/main/ssstik.io_1766343698274.mp3" loop></audio>
+<button id="soundBtn" aria-pressed="false" title="Reproducir / Pausar">▶</button>
+
+<script>
+const bgMusic = document.getElementById('bgMusic');
+const soundBtn = document.getElementById('soundBtn');
+let isPlaying = false;
+
+// Reproducir al tocar cualquier parte de la pantalla (solo primera vez)
+function playOnTouch() {
+  if (!isPlaying) {
+    bgMusic.volume = 0.4;
+    bgMusic.play().then(() => { isPlaying = true; soundBtn.textContent = '⏸'; }).catch(() => {});
+  }
+  window.removeEventListener('click', playOnTouch);
+  window.removeEventListener('touchstart', playOnTouch);
+}
+window.addEventListener('click', playOnTouch);
+window.addEventListener('touchstart', playOnTouch);
+
+// Botón de pausa/play
+soundBtn.addEventListener('click', () => {
+  if (!isPlaying) return; // no hace nada si aún no se reprodujo
+  if (bgMusic.paused) {
+    bgMusic.play(); soundBtn.textContent = '⏸';
+  } else {
+    bgMusic.pause(); soundBtn.textContent = '▶';
+  }
+});
+</script>
+
+</body>
+</html>
